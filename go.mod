@@ -1,4 +1,4 @@
-module changeme
+module startuo
 
 go 1.21
 
