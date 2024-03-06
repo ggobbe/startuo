@@ -1,32 +1,30 @@
 <script lang="ts">
-  import logo from './assets/images/logo-universal.png'
-  import {Greet} from '../wailsjs/go/main/App.js'
+  import logo from './assets/images/back.png'
+  import {DownloadManifest} from '../wailsjs/go/main/App.js'
 
-  let resultText: string = "Please enter your name below 👇"
-  let name: string
+  let resultText: string = ""
 
-  function greet(): void {
-    Greet(name).then(result => resultText = result)
+  function downloadManifest(): void {
+    DownloadManifest().then(result => resultText = result)
   }
 </script>
 
 <main>
-  <img alt="Wails logo" id="logo" src="{logo}">
-  <div class="result" id="result">{resultText}</div>
+  <img alt="logo" id="logo" src="{logo}">
   <div class="input-box" id="input">
-    <input autocomplete="off" bind:value={name} class="input" id="name" type="text"/>
-    <button class="btn" on:click={greet}>Greet</button>
+    <button class="btn" on:click={downloadManifest}>Download Manifest</button>
   </div>
+  <hr>
+  <pre class="result" id="result">{resultText}</pre>
 </main>
 
 <style>
 
   #logo {
     display: block;
-    width: 50%;
-    height: 50%;
+    width: 100%;
     margin: auto;
-    padding: 10% 0 0;
+    padding: 0 0;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -40,7 +38,7 @@
   }
 
   .input-box .btn {
-    width: 60px;
+    width: auto;
     height: 30px;
     line-height: 30px;
     border-radius: 3px;

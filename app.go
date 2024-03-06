@@ -3,6 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
+	"log"
+	"time"
+
+	"github.com/jlaffaye/ftp"
 )
 
 // App struct
@@ -21,7 +26,36 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+// TODO: quick test, refactor this
+func (a *App) DownloadManifest() string {
+
+	c, err := ftp.Dial("maj.uoresistance.com:2121", ftp.DialWithTimeout(5*time.Second))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = c.Login("uoresistance", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Do something with the FTP conn
+	// Manifest.txt
+	r, err := c.Retr("Manifest.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer r.Close()
+
+	buf, err := io.ReadAll(r)
+	if err != nil {
+		log.Fatal(err)
+	}
+	println(string(buf))
+
+	if err := c.Quit(); err != nil {
+		log.Fatal(err)
+	}
+
+	return fmt.Sprintf("%s", string(buf))
 }
